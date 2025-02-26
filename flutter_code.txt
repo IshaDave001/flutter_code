@@ -1,0 +1,315 @@
+main.dart
+==========
+
+import 'package:flutter/material.dart';
+import 'dart:async';
+
+import 'package:login/second.dart';
+
+void main() {
+  runApp(MaterialApp(
+    home: splash(),
+  ));
+}
+
+class splash extends StatelessWidget {
+  const splash({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    Timer(Duration(seconds: 5), () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => login()),
+      );
+    });
+
+    return Scaffold(
+      // body:
+      // Center(
+      //   child: Container(
+      //
+      //     child: Image.asset('assets/bird.png'),
+      //     // Your splash image
+      //   ),
+      // ),
+      body: Container(
+          //color: Colors.blueGrey,
+          child: Center(child: Image.asset("assets/bird.png"))),
+    );
+  }
+}
+
+class login extends StatelessWidget {
+  login({super.key});
+
+  TextEditingController person = TextEditingController();
+  TextEditingController pass = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // appBar: AppBar(
+      //   title: Center(child: Text("Login Page")),
+      //   backgroundColor: Colors.lightBlue,
+      // ),
+      body: Container(
+        margin: EdgeInsets.all(50),
+        child: Column(
+          children: [
+            Center(
+                child: ClipOval(
+              child:
+                  SizedBox(height: 100, child: Image.asset("assets/user.png")),
+            )),
+            SizedBox(
+              height: 30,
+            ),
+            TextFormField(
+              controller: person,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  icon: Icon(Icons.person),
+                  labelText: "Enter username"),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            TextField(
+              controller: pass,
+              obscureText: true,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  icon: Icon(Icons.lock),
+                  labelText: "Enter Password"),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                //validate username
+                String user = person.text;
+                int cnt = 0;
+                Set<String> vowels = {
+                  'a',
+                  'e',
+                  'i',
+                  'o',
+                  'u',
+                  'A',
+                  'E',
+                  'I',
+                  'O',
+                  'U'
+                };
+                for (int i = 0; i < user.length; i++) {
+                  if (vowels.contains(user[i])) {
+                    cnt++;
+                  }
+                }
+                if (cnt % 2 == 0) {
+                  print("vovel are greter than or less than  3");
+                } else {
+                  print("vovel are even");
+                }
+                // Validate password
+                try {
+                  int intpass = int.parse(pass.text);
+                  int arm = 0, r, original;
+                  original = intpass;
+
+                  int  n = original.toString().length;
+
+                  while (intpass > 0) {
+                    r = intpass % 10;
+                    arm += (r * r * r);
+                    intpass ~/= 10;
+                  }
+
+                  if (original == arm) {
+                    print("Login successful!"); // Successful login
+                    // Navigate to the next screen
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => second()),
+                    );
+                  } else {
+                    print("Password is not an Armstrong number.");
+                  }
+                } catch (e) {
+                  print(
+                      "Error: Please enter a valid integer for the password.");
+                }
+                //navigate
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) =>
+                //             second()));
+              },
+              child: Text("Login"),
+            ),
+            Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child: ElevatedButton(
+                      onPressed: () {}, child: Text("Forgot Password")),
+                ),
+                Container(
+                  child:
+                      ElevatedButton(onPressed: () {}, child: Text("Sign in")),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+============================================================
+
+second.dart
+============
+import 'package:flutter/material.dart';
+
+class second extends StatefulWidget {
+  second({super.key});
+
+  final TextEditingController strtxt = TextEditingController();
+
+  @override
+  State<second> createState() => _secondState();
+}
+
+class _secondState extends State<second> {
+  String textToShow = ""; // Renamed to avoid conflict
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(),
+        body: Column(
+          children: [
+            Text(textToShow),
+            TextField(controller: widget.strtxt), // Access the controller from widget
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  if (widget.strtxt.text.isEmpty) {
+                    textToShow = "Empty Text"; // Show "Empty Text" if TextField is empty
+                  } else {
+                    textToShow = widget.strtxt.text;
+                  } // Update textToShow with TextField text
+                });
+              },
+              child: Text("change text"),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+=====================================================================================
+
+List
+===========
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+    home: MyApp(),
+  ));
+}
+
+class MyApp extends StatefulWidget {
+  MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController txtNm = new TextEditingController();
+  List<int> lstMarks = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          TextField(
+            decoration: InputDecoration(labelText: "Enter Marks"),
+            controller: txtNm,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+              onPressed: () {
+                int no = int.parse(txtNm.text);
+                lstMarks.add(no);
+                 setState(() {});
+              },
+              child: Text("Save")),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            "Size of list is: " + lstMarks.length.toString(),
+            style: TextStyle(color: Colors.redAccent, fontSize: 30),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+==========================================================================================
+
+prime number 
+==================
+
+// C++ Program to check for prime number using
+//  Simple Trial Division
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    int n = 29;
+
+    int cnt = 0;
+
+    // If number is less than/equal to 1,
+    // it is not prime
+    if (n <= 1)
+        cout << n << " is NOT prime" << endl;
+    else {
+
+        // Check for divisors from 1 to n
+        for (int i = 1; i <= n; i++) {
+
+            // Check how many number is divisible
+            // by n
+            if (n % i == 0)
+                cnt++;
+        }
+
+        // If n is divisible by more than 2 numbers
+        // then it is not prime
+        if (cnt > 2)
+            cout << n << " is NOT prime" << endl;
+
+        // else it is prime
+        else
+            cout << n << " is prime" << endl;
+    }
+
+    return 0;
+}
