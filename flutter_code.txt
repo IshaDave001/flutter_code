@@ -198,11 +198,7 @@ class _secondState extends State<second> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  if (widget.strtxt.text.isEmpty) {
-                    textToShow = "Empty Text"; // Show "Empty Text" if TextField is empty
-                  } else {
-                    textToShow = widget.strtxt.text;
-                  } // Update textToShow with TextField text
+                  txtusername.text == "" ? "Empty" : str1,
                 });
               },
               child: Text("change text"),
