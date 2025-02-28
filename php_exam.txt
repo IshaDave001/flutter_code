@@ -163,3 +163,34 @@ Route::get('/registration',[Insurance::class,'PolicyRegistrationForm']);
 Route::get('/show',[Insurance::class,'show']);
 
 Route::post('/registration',[Insurance::class,'submit']);
+=----------------------------------------------------------------------------------------------
+
+css file
+=========
+h1{
+    font-size: 30px;
+    text-align: center;
+}
+table{
+    margin: auto;
+    border: 1px solid;
+    border-radius: 10px;
+    height: 30%;
+    width: 35%;
+    margin-top: 10%;
+    font-size: 25px;
+}
+table input,select{
+    width: 95%;
+    height: 25px;
+}
+button{
+    margin-top: 20px;
+    margin-left: 45%;
+    width: 15%;
+    height: 30px;
+    background-color: royalblue;
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
+}
