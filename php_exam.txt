@@ -1,0 +1,165 @@
+layout.blade.php
+=================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Layout</title>
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{asset('/')}}">Home</a>
+            <a href="{{asset('/about')}}">About</a>
+            <a href="{{asset('/contact')}}">ContactUs</a>
+        </nav>
+    </header>
+    <main>
+        @yield('content')
+    </main>
+    <footer>
+        <p style="text-align:center">@2025 Aasthaba jadeja</p>
+    </footer>
+</body>
+</html>
+------------------------------------------------------------------------------------------
+
+form.blade.php
+==================
+@extends('layout')
+
+@section('content')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        // Function to set the minimum date to today
+        function setMinDate() {
+            const today = new Date();
+            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+            const yyyy = today.getFullYear();
+            const formattedDate = yyyy + '-' + mm + '-' + dd; // Format: YYYY-MM-DD
+            document.getElementById("TravelDate").setAttribute("min", formattedDate);
+        }
+
+        // Call the function when the page loads
+        window.onload = setMinDate;
+    </script>
+
+</head>
+<body>
+<form method="post" action="/registration" >
+    @csrf
+    <table>
+        <tr>
+            <td>Customer Name : </td>
+            <td>
+                <input type="text" name="CustomerName:" required>
+            </td>
+        </tr>
+        <tr>
+            <td>Email : </td>
+            <td>
+                <input type="email" name="Email:" required>
+            </td>
+        </tr>
+        <tr>    
+            <td>Pplicy Type : </td>
+            <td><select name="Policytype:">
+                    <option>Life Insurance</option>
+                    <option>Health Insurance</option>
+                    <option>Car Insurance</option>
+                    <option>Home Insurance</option>
+                </select>
+</td>
+
+        </tr>
+        <tr>
+            <td>Premium Amount: </td>
+            <td>
+                <input type="number" name="PrimiumAmount:" min="1" required>
+            </td>
+        </tr>
+    </table>
+    <nav>
+        <button type="submit" >Submit</button>
+    </nav>
+</form>
+</body>
+</html>
+@endsection
+--------------------------------------------------------------------------------
+
+controller.php
+===============
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class Insurance extends Controller
+{
+    //
+    public function index(){
+        return view('/welcome');
+    }
+    public function PolicyRegistrationForm(){
+        return view('/PolicyRegistrationForm');
+    }
+    public function show(){
+        return view('/show');
+    }
+    public function submit(Request $request){
+        $data = $request -> all();
+        return view ('/show',compact('data'));
+    }
+}
+-------------------------------------------------------------------------------------
+
+show.blade.php
+================
+@extends('layout')
+
+@section('content')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <table>
+    @foreach($data as $key => $value)
+        @if($key !== '_token') 
+            <tr>
+                <td>{{ $key }}</td>
+                <td>{{ $value }}</td>
+            </tr>
+        @endif
+    @endforeach
+    </table>
+</body>
+</html>
+@endsection
+-----------------------------------------------------------------------------------------------
+
+web.php
+===========
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Insurance;
+
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/',[Insurance::class,'index']);
+Route::get('/registration',[Insurance::class,'PolicyRegistrationForm']);
+Route::get('/show',[Insurance::class,'show']);
+
+Route::post('/registration',[Insurance::class,'submit']);
