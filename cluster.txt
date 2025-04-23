@@ -1,0 +1,51 @@
+from pandas import *
+from numpy import *
+import matplotlib.pyplot as plt
+from sklearn.cluster import AgglomerativeClustering
+from sklearn.datasets import load_iris
+from scipy.cluster.hierarchy import dendrogram,linkage
+
+data=read_csv("iris.csv")
+data.head()
+
+model=AgglomerativeClustering(n_clusters=3)
+
+x=data[["sepal.length","sepal.width","petal.length","petal.width"]]
+y=data["variety"]
+
+model=AgglomerativeClustering(n_clusters=3)
+
+model.fit(x)
+model.fit_predict(x)
+
+labels=model.labels_
+labels
+
+from sklearn.cluster import KMeans
+km=KMeans(n_clusters=3)
+km
+
+km.fit(x)
+
+pre=km.predict(x)
+pre
+
+km.cluster_centers_
+
+data["cluster"]=pre
+
+d1=data[data.cluster==0]
+d2=data[data.cluster==1]
+d3=data[data.cluster==2]
+plt.scatter(d1["sepal.length"],d1["sepal.width"],color="red")
+plt.scatter(d2["sepal.length"],d2["sepal.width"],color="green")
+plt.scatter(d3["sepal.length"],d3["sepal.width"],color="blue")
+plt.scatter(km.cluster_centers_[:,0],km.cluster_centers_[:,1],color="black",marker="*",s=100)
+plt.show()
+
+df={'Name':['abc','def','ghi','abc','lmn','ghi','abc'],
+    'Age':[20,30,40,51,12,61,71]}
+df
+df=DataFrame(df)
+df
+df.groupby('Name').groups
